@@ -1,0 +1,81 @@
+Test Case #,Use Case,Function Being Tested,Initial System State,Input,Expected Output
+41,System Startup,System rejects negative initial cash amount,System is requesting cash amount,Enter a negative number (e.g. -10),System displays error message and requests valid cash amount
+42,System Startup,System rejects zero initial cash amount,System is requesting cash amount,Enter 0,System displays error message requesting a positive cash amount
+43,System Startup,System accepts maximum initial cash amount,System is requesting cash amount,Enter a very large number (e.g. 10000),System accepts and is turned on
+44,System Startup,System rejects non-numeric initial cash amount,System is requesting cash amount,Enter alphabetic characters (e.g. abc),System displays error message and requests numeric input
+45,System Startup,System rejects decimal initial cash amount,System is requesting cash amount,Enter decimal number (e.g. 10.5),System displays error message and requests whole number
+46,System Startup,System startup after abnormal shutdown,System was improperly shut down (simulated crash),Activate the on switch,System performs recovery and requests initial cash amount
+47,System Startup,System displays correct initial state on screen,System is off,Activate the on switch and enter valid cash amount,Screen displays ATM Ready or equivalent message
+48,System Startup,System initializes transaction log on startup,System is off,Activate the on switch and enter valid cash amount,System creates new log entry with startup timestamp
+49,System Startup,System verifies bank connection on startup,System has just been turned on,System automatically checks connection,System displays connection status (connected/disconnected)
+50,System Startup,Multiple rapid on/off attempts,System is off,Rapidly toggle on/off switch multiple times,System handles gracefully without crashing
+51,System Shutdown,System prevents shutdown during active transaction,System is processing a withdrawal transaction,Activate the off switch,System displays message that shutdown cannot occur during transaction
+52,System Shutdown,System prevents shutdown when card is inserted,System has card inserted but no transaction in progress,Activate the off switch,System displays message to remove card before shutdown
+53,System Shutdown,System saves transaction log before shutdown,System is on with completed transactions in log,Activate the off switch,System persists log data before shutting down
+54,System Shutdown,System displays shutdown confirmation,System is on and idle,Activate the off switch,System displays Shutting down message before turning off
+55,System Shutdown,System closes bank connection on shutdown,System is on with active bank connection,Activate the off switch,System properly closes connection before shutdown
+56,System Shutdown,System handles shutdown during PIN entry,System is requesting PIN entry,Activate the off switch,System prevents shutdown and displays appropriate message
+57,System Shutdown,System clears screen on shutdown,System is on displaying transaction menu,Activate the off switch,Screen is cleared and displays System Off
+58,System Shutdown,System records shutdown time in log,System is on and idle,Activate the off switch,Log contains shutdown timestamp entry
+59,Session,System handles damaged card with partial data,System is on and not servicing a customer,Insert a partially readable card,Card is ejected with error message
+60,Session,System validates card number format,System is prompting for card number,Enter invalid format card number (e.g. abc),System displays error and requests valid numeric card number
+61,Session,System handles expired card,System is on and not servicing a customer,Insert an expired card (card #3),System displays Card Expired message and ejects card
+62,Session,System times out PIN entry,System is requesting PIN entry,Wait without entering PIN for extended period,System displays timeout message and ejects card
+63,Session,System accepts exactly 3 PIN retries before retention,System is requesting PIN entry,Enter incorrect PIN 3 times,Card is retained and system displays message to contact bank
+64,Session,System retains card after 3 failed PIN attempts,System is requesting PIN entry,Enter incorrect PIN 3 consecutive times,Card is permanently retained and not ejected
+65,Session,System handles simultaneous card insertion attempts,System is ready to accept card,Attempt to insert card while one is already in reader,System rejects second card or displays error
+66,Session,System validates card against bank database,System is on and not servicing a customer,Insert valid card (card #1),System communicates with bank to validate card
+67,Session,System handles invalid card number from bank,System is prompting for card number,Enter card number not in bank system (e.g. 999),System displays Invalid Card and returns to ready state
+68,Session,System logs card insertion event,System is on and ready,Insert a readable card,Log entry created with card insertion timestamp
+69,Session,System handles PIN with leading zeros,System is requesting PIN entry,Enter PIN with leading zeros (e.g. 0042),System correctly processes PIN and accepts or rejects appropriately
+70,Session,System masks PIN entry on display,System is requesting PIN entry,Enter any PIN digits,Display shows asterisks (*) instead of actual digits
+71,Session,System prevents PIN from being logged,System is requesting PIN entry,Enter correct PIN and complete transaction,Transaction log does not contain PIN value
+72,Session,System handles cancel during transaction menu,System is displaying transaction type menu,Press Cancel key,System asks if user wants to perform another transaction
+73,Session,System ejects card after session timeout,System is displaying transaction menu,Wait without input for extended period,System displays timeout message and ejects card
+74,Withdrawal,System handles withdrawal from savings account,System is displaying account type menu for withdrawal,Select savings account,System displays withdrawal amount menu
+75,Withdrawal,System handles withdrawal from money market account,System is displaying account type menu for withdrawal,Select money market account,System displays withdrawal amount menu
+76,Withdrawal,System enforces $20 increment rule,System is requesting custom withdrawal amount,Enter amount not divisible by $20 (e.g. $35),System displays error requesting amount in $20 multiples
+77,Withdrawal,System dispenses correct number of bills,System is processing $100 withdrawal,Complete withdrawal transaction,System dispenses exactly 5 bills of $20
+78,Withdrawal,System updates cash on hand after withdrawal,System has $500 cash processing $100 withdrawal,Complete withdrawal transaction,System cash inventory decreases to $400
+79,Withdrawal,System handles maximum withdrawal limit,System is requesting withdrawal amount,Enter maximum allowed amount (e.g. $500),System processes if sufficient cash and balance exist
+80,Withdrawal,System rejects withdrawal exceeding daily limit,Customer has already withdrawn daily limit,Attempt another withdrawal,System displays daily limit exceeded message
+81,Withdrawal,System handles insufficient ATM cash mid-transaction,System has $40 cash remaining,Attempt to withdraw $60,System displays insufficient cash message
+82,Withdrawal,System prints correct account balance on receipt,System is completing withdrawal of $40 from checking ($100 balance),Transaction completes,Receipt shows new balance of $60
+83,Withdrawal,System handles withdrawal leaving zero balance,Checking account has exactly $100,Withdraw $100 from checking,Transaction completes with $0 balance
+84,Withdrawal,System validates minimum withdrawal amount,System is requesting withdrawal amount,Attempt to withdraw $0 or negative amount,System displays error message
+85,Withdrawal,System handles concurrent balance check during withdrawal,System is processing withdrawal,Bank updates balance during transaction,System uses most current balance for validation
+86,Withdrawal,System records withdrawal time on receipt,System is completing withdrawal,Transaction completes,Receipt shows current date and time
+87,Withdrawal,System handles bank approval denial,System has sent withdrawal request to bank,Bank denies approval (insufficient funds),System displays denial message and cancels transaction
+88,Withdrawal,System displays ATM location on receipt,System is completing withdrawal,Transaction completes,Receipt shows ATM location/ID
+89,Deposit,System handles deposit to savings account,System is displaying account type menu for deposit,Select savings account,System requests deposit amount
+90,Deposit,System handles deposit to money market account,System is displaying account type menu for deposit,Select money market account,System requests deposit amount
+91,Deposit,System accepts large deposit amounts,System is requesting deposit amount,Enter very large amount (e.g. $10000),System accepts and requests envelope
+92,Deposit,System rejects zero or negative deposit amounts,System is requesting deposit amount,Enter $0 or negative amount,System displays error requesting positive amount
+93,Deposit,System handles deposit envelope timeout,System is requesting envelope insertion,Wait without inserting envelope beyond timeout,System cancels deposit and does not credit account
+94,Deposit,System validates envelope insertion,System is requesting envelope insertion,Insert envelope within timeout,System accepts envelope and credits account
+95,Deposit,System updates balance correctly after deposit,Checking account has $100,Deposit $50 to checking,Account balance shows $150 pending verification
+96,Deposit,System marks deposit as pending verification,System is processing deposit,Complete deposit transaction,Receipt indicates deposit subject to verification
+97,Deposit,System logs both deposit messages to bank,System is processing deposit,Insert envelope after entering amount,Log shows initial approval and envelope acceptance messages
+98,Deposit,System handles minimum deposit amount validation,System is requesting deposit amount,Enter very small amount (e.g. $0.01),System accepts or rejects based on policy
+99,Transfer,System prevents transfer from account to same account,System is displaying transfer to account menu,Select same account as transfer from,System displays error message preventing same-account transfer
+100,Transfer,System handles transfer exceeding source balance,System is requesting transfer amount,Enter amount greater than source account balance,System displays insufficient funds message
+101,Transfer,System updates both accounts correctly,Transfer $50 from savings ($1000) to checking ($100),Complete transfer,Savings shows $950 checking shows $150
+102,Transfer,System handles maximum transfer amount,System is requesting transfer amount,Enter maximum allowed amount,System processes if sufficient balance
+103,Transfer,System validates minimum transfer amount,System is requesting transfer amount,Enter $0 or negative amount,System displays error message
+104,Transfer,System prints both account balances on receipt,System is completing transfer,Transaction completes,Receipt shows updated balances for both accounts
+105,Transfer,System handles transfer leaving zero balance in source,Source account has exactly $100,Transfer entire $100 to another account,Transaction completes with $0 source balance
+106,Transfer,System handles all possible account combinations,System is at account selection menus,Transfer between all 6 possible account pairs,All valid combinations work correctly
+107,Inquiry,System displays inquiry for savings account,System is displaying account type menu,Select savings account,System displays and prints savings balance ($1000)
+108,Inquiry,System displays inquiry for money market account,System is displaying account type menu,Select money market account,System displays and prints money market balance ($5000)
+109,Inquiry,System shows available vs total balance,System is performing inquiry with pending deposit,Inquiry completes,Receipt shows both available and total balance
+110,Inquiry,System performs inquiry without affecting balance,Checking has $100,Perform inquiry on checking,Balance remains $100 after inquiry
+111,Inquiry,System allows multiple inquiries in one session,System completed one inquiry,Select yes for another transaction and inquiry again,Second inquiry completes successfully
+112,Inquiry,System prints inquiry receipt with timestamp,System is completing inquiry,Inquiry completes,Receipt shows current date time and ATM location
+113,Transaction,System handles bank communication failure during transaction,System is processing any transaction,Bank connection fails mid-transaction,System displays error and allows retry or cancel
+114,Transaction,System handles invalid account type selection,System is displaying account menu,Enter invalid input (e.g. 4 or letters),System displays error and re-displays menu
+115,Transaction,System validates all transactions against bank,System is processing any transaction type,Complete transaction,Log shows message sent to bank and response received
+116,Transaction,System handles receipt printer failure,System is completing successful transaction,Printer is out of paper,System displays printer error but completes transaction
+117,Transaction,System handles session with all transaction types,System is idle after card/PIN entry,Perform withdrawal deposit transfer and inquiry,All four transactions complete successfully
+118,Transaction,System handles rapid repeated transactions,System is asking for another transaction,Select yes and perform 5 quick consecutive transactions,All transactions process correctly
+119,Transaction,System enforces transaction limits per session,Customer has performed 10 transactions,Attempt 11th transaction,System allows or enforces per-session limit based on policy
+120,Transaction,System clears sensitive data between sessions,Previous session completed,Start new session with different card,No data from previous customer is accessible
